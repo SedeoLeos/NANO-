@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import jsonwebtoken from 'jsonwebtoken';
 
 export function middleware(request) {
     const token = request.cookies.get('userToken')?.value;

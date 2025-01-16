@@ -2,12 +2,12 @@
 
 import Task from "@/components/Task";
 import { restartMessageValue } from "@/store/slices/task";
-import { AddTaskThunk } from "@/store/thunks/task";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import { AddTaskThunk, GetTaskThunk } from "@/store/thunks/task";
+import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from "react-redux";
 import { BounceLoader } from 'react-spinners';
+
 
 
 export default function Home() {
@@ -23,6 +23,8 @@ export default function Home() {
   const {loading,errorMessage,successMessage}=useSelector((state)=>state.task);
 
   const {userInfos}=useSelector((state)=>state.auth);
+
+  const {tasks}=useSelector((state)=>state.task);
 
   const handleInput=(e)=>{
 
@@ -59,6 +61,18 @@ export default function Home() {
 
 },[errorMessage,successMessage])
 
+
+
+ useEffect(()=>{
+
+  console.log('On recupere les taches',userInfos?.userId);
+
+  if(userInfos){
+    
+    dispatch(GetTaskThunk(userInfos?.userId));
+  }
+  
+ },[userInfos])
 
 
   return (
@@ -98,33 +112,11 @@ export default function Home() {
            <h1 className="font-bold text-[#181D27]" style={{fontSize:"30px"}}>Liste de taches (<span>16</span>)</h1>
            <p className="mt-4 text-[#535862]" style={{fontSize:"16px"}}>Choisissez le secteur auquel appartient votre entreprise. Cette personnalisation nous aide à vous offrir une expérience sur mesure et pertinente.</p>
            <div className="mt-4 flex flex-wrap justify-between gap-y-4">
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
+              {tasks.length  > 0 ?  tasks.map((el,index)=> <Task />) : <div className="mt-4"> 
+                  <h2 className="text-center text-red-400"> 
+                    Aucune tache
+                  </h2>
+                </div>}
            </div>
         </div>
       

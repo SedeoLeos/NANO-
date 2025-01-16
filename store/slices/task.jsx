@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { decodeToken } from "@/utils";
-import { AddTaskThunk } from "../thunks/task";
+import { AddTaskThunk, GetTaskThunk } from "../thunks/task";
 
 export const taskSlice= createSlice({
     name:'task',
@@ -33,6 +32,14 @@ export const taskSlice= createSlice({
             state.successMessage=payload.message;
             state.tasks=[...state.tasks,payload.task];
         })
+
+         // GetThunk
+
+        builder.addCase(GetTaskThunk.fulfilled,(state,{payload})=>{
+            state.loader=false;
+            state.tasks=payload.tasks;
+        })
+        
 
         
 

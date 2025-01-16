@@ -12,3 +12,17 @@ export const AddTaskThunk=createAsyncThunk('add_task', async(info,{rejectWithVal
     }
 })
 
+export const GetTaskThunk=createAsyncThunk('get_task', async(userId,{rejectWithValue,fulfillWithValue})=>{
+    try {
+        const {data}= await api.get(`/task/get/${userId}`,{withCredentials:true});
+
+        return fulfillWithValue(data);
+    } catch (error) {
+        return rejectWithValue(error.response.data);
+    }
+})
+
+
+
+
+
